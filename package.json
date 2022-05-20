@@ -1,0 +1,10 @@
+{
+  "name": "raindrop-worker",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Matthew Stanciu <mattbstanciu@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@cloudflare/workers-types": "^3.10.0"
+  }
+}

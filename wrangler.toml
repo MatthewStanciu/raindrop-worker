@@ -1,0 +1,15 @@
+name = "raindrop"
+type = "javascript"
+main = "src/index.ts"
+compatibility_date = "2022-05-20"
+
+account_id = "b3eb1883bfdacfb3e96a4b7a180d8a7e"
+workers_dev = true
+
+[[r2_buckets]]
+binding = 'BUCKET'
+bucket_name = 'raindrop'
+preview_bucket_name = 'ph-img-test'
+
+# [[secrets]]
+# AUTH_SECRET
