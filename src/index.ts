@@ -6,7 +6,11 @@ interface Env {
 }
 
 export default {
-  async fetch(request: Request, env: Env): Promise<Response> {
+  async fetch(
+    request: Request,
+    env: Env,
+    event: FetchEvent
+  ): Promise<Response> {
     const url = new URL(request.url)
     const key = url.pathname.slice(1)
 
@@ -49,11 +53,13 @@ export default {
           return new Response('Object Not Found', { status: 404 })
         }
 
-        return new Response(object.body, {
+        const response = new Response(object.body, {
           headers: {
             'Cache-Control': 'public, max-age=31536000, immutable'
           }
         })
+        event.waitUntil(cache.put(request, response.clone()))
+        return response
       case 'DELETE':
         await env.BUCKET.delete(key)
         return new Response('Deleted!', { status: 200 })
