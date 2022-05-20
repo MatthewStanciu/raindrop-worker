@@ -18,20 +18,20 @@ export default {
     const url = new URL(request.url)
     const key = url.pathname.slice(1)
 
+    const token = request.headers
+      .get('authorization')
+      ?.replace('Bearer ', '')
+      .trim()
+
+    if (!token) {
+      return new Response('Missing token', { status: 401 })
+    }
+    if (token !== env.AUTH_SECRET) {
+      return new Response('Incorrect token', { status: 401 })
+    }
+
     switch (request.method) {
       case 'PUT':
-        const token = request.headers
-          .get('authorization')
-          ?.replace('Bearer ', '')
-          .trim()
-
-        if (!token) {
-          return new Response('Missing token', { status: 401 })
-        }
-        if (token !== env.AUTH_SECRET) {
-          return new Response('Incorrect token', { status: 401 })
-        }
-
         const data = await request.formData()
         const file = data.get('file') as File
 
