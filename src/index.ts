@@ -19,15 +19,15 @@ export default {
       ?.replace('Bearer ', '')
       .trim()
 
-    if (!token) {
-      return new Response('Missing token', { status: 401 })
-    }
-    if (token !== env.AUTH_SECRET) {
-      return new Response('Incorrect token', { status: 401 })
-    }
-
     switch (request.method) {
       case 'PUT':
+        if (!token) {
+          return new Response('Missing token', { status: 401 })
+        }
+        if (token !== env.AUTH_SECRET) {
+          return new Response('Incorrect token', { status: 401 })
+        }
+
         const data = await request.formData()
         const file = data.get('file') as File
 
@@ -61,6 +61,13 @@ export default {
         event.waitUntil(cache.put(request, response.clone()))
         return response
       case 'DELETE':
+        if (!token) {
+          return new Response('Missing token', { status: 401 })
+        }
+        if (token !== env.AUTH_SECRET) {
+          return new Response('Incorrect token', { status: 401 })
+        }
+
         await env.BUCKET.delete(key)
         return new Response('Deleted!', { status: 200 })
 
